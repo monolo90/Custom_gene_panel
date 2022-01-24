@@ -1,12 +1,11 @@
 GFFtoBED<- function(gtf, assembly_report) {
 
-### SELECT AND MANDE ### GFF
+### SELECT AND MANE ### GTF
 
 MANE_RefSeqSelect <- read.delim(gtf, header=FALSE, comment.char="#")
 MANE_RefSeqSelect = MANE_RefSeqSelect[MANE_RefSeqSelect$V3=="exon",]
 Refseq_Mane_select = MANE_RefSeqSelect[grepl("RefSeq Select|MANE Select",MANE_RefSeqSelect$V9,),]
 rm(MANE_RefSeqSelect)
-
 
 library(stringr)
 
