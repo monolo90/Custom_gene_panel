@@ -31,3 +31,36 @@ chr= GCF_000001405_39_GRCh38_p13_assembly_report$X10[match(BED_MANE$chr, GCF_000
 BED_MANE$chr = chr
 return(BED_MANE)
 }
+
+#####################################################################################################
+#####################################################################################################
+#####################################################################################################
+#####################################################################################################
+
+panel_gens = c("ATM","BRCA1")
+
+Exons_to_introns<- function(BEDMANE, panel_gens) {
+Intrones = data.frame(matrix(ncol = 7))
+names(Intrones)<- c("chr","start","end","name","strand","gen","intron")
+for (gen in panel_gens) {
+  prueba=BEDMANE[ which(BEDMANE$gen==gen),]
+  if (prueba$strand[1]=="+") {
+    for (num in c(1:length(prueba$exon))) {
+      Intrones=rbind(Intrones,(c(prueba$chr[num], prueba$end[num], prueba$start[num+1],prueba$name[num],
+                                 prueba$strand[num], prueba$gen[num], prueba$exon[num] )))
+    }
+  }
+  else{
+    for (num in c(1:length(prueba$exon))) {
+      Intrones=rbind(Intrones,(c(prueba$chr[num],prueba$end[num+1],prueba$start[num],prueba$name[num],
+                                 prueba$strand[num], prueba$gen[num], prueba$exon[num] )))
+    }
+  }
+}
+Intrones = na.omit(Intrones)
+name=paste(Intrones$gen,Intrones$intron,"Intron",sep = "_")
+Introns_bed= data.frame(chr=Intrones$chr,start=Intrones$start,end=Intrones$end, name=name)
+return(Introns_bed)
+}
+
+
